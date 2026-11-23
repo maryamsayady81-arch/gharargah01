@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قرارگاه صفر و یک</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-deep: #071023;
+            --bg-mid: #0b1a35;
+            --gold: #e8c158;
+            --light-gold: #f7e08a;
+            --pale-gold: #f0d97a;
+            --soft-gold: #d4bd88;
+            --text-light: #eef3fa;
+            --text-muted: #9fb1cc;
+            --pink: #e8a0c8;
+            --purple: #a78bfa;
+            --purple-light: #c4b5fd;
+            --purple-deep: #7c5cd6;
+            --purple-glow: rgba(167, 139, 250, 0.35);
+            --glass: rgba(255, 255, 255, 0.055);
+            --glass-border: rgba(232, 193, 88, 0.22);
+            --glass-hi: rgba(255, 255, 255, 0.09);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            color: var(--text-light);
+            line-height: 1.9;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background:
+                radial-gradient(ellipse 60% 50% at 15% 0%, rgba(232,193,88,0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 90% 20%, rgba(167,139,250,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 80% 60% at 50% 100%, rgba(232,193,88,0.06) 0%, transparent 70%),
+                linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 100%);
+        }
+
+        .stars {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            color: var(--gold);
+            opacity: 0;
+            animation: twinkleFloat 9s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(232,193,88,0.8);
+        }
+
+        @keyframes twinkleFloat {
+            0%   { opacity: 0; transform: translateY(0) scale(0.4); }
+            25%  { opacity: 0.75; }
+            55%  { opacity: 0.35; transform: translateY(-18px) scale(1); }
+            80%  { opacity: 0.7; }
+            100% { opacity: 0; transform: translateY(-34px) scale(0.4); }
+        }
+
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 55px 18px 65px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .bismillah {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--pale-gold);
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+            opacity: 0.9;
+            position: relative;
+            padding: 0 20px;
+            line-height: 2.2;
+            animation: fadeInSoft 1.4s ease-out both;
+        }
+
+        .bismillah::before,
+        .bismillah::after {
+            content: '✦';
+            font-size: 9px;
+            color: var(--gold);
+            margin: 0 12px;
+            opacity: 0.6;
+            vertical-align: middle;
+        }
+
+        @keyframes fadeInSoft {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 0.95; transform: translateY(0); }
+        }
+
+        .site-title {
+            text-align: center;
+            margin-bottom: 45px;
+            animation: fadeInSoft 1.6s ease-out both;
+        }
+
+        .site-title .title-text {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            line-height: 1.5;
+            padding: 4px 10px;
+        }
+
+        .site-title .title-text .bit {
+            font-family: monospace;
+            font-size: 18px;
+            font-weight: 900;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .site-title .title-text .bit-0 {
+            color: var(--bg-deep);
+            background: linear-gradient(135deg, var(--gold), var(--light-gold));
+            box-shadow: 0 0 18px rgba(232,193,88,0.5);
+        }
+
+        .site-title .title-text .bit-1 {
+            color: var(--gold);
+            background: var(--bg-deep);
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 18px rgba(232,193,88,0.4);
+        }
+
+        .site-title .title-text .title-name {
+            background: linear-gradient(120deg, #fff4d0 0%, var(--gold) 40%, #fff4d0 60%, var(--gold) 100%);
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 6s linear infinite;
+            filter: drop-shadow(0 0 18px rgba(232,193,88,0.3));
+        }
+
+        @keyframes shimmer {
+            to { background-position: 250% center; }
+        }
+
+        .site-title .title-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .site-title .title-line::before,
+        .site-title .title-line::after {
+            content: '';
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(232,193,88,0.5), transparent);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 10px 20px 45px;
+            position: relative;
+        }
+
+        .avatar-stage {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+
+        .avatar {
+            position: relative;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            background: linear-gradient(145deg, rgba(232,193,88,0.18), rgba(255,255,255,0.02));
+            border: 1.5px solid rgba(232,193,88,0.5);
+            box-shadow:
+                0 0 0 6px rgba(232,193,88,0.06),
+                0 0 40px rgba(232,193,88,0.28);
+            backdrop-filter: blur(10px);
+            z-index: 2;
+        }
+
+        .avatar-stage .orbit-inner {
+            position: absolute;
+            inset: -32px;
+            border-radius: 50%;
+            border: 1px dashed rgba(232,193,88,0.18);
+            animation: spinOrbitReverse 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .avatar-stage .orbit {
+            position: absolute;
+            inset: -58px;
+            border-radius: 50%;
+            border: 1px dashed rgba(232,193,88,0.12);
+            animation: spinOrbit 26s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .avatar-stage .orbit span,
+        .avatar-stage .orbit-inner span {
+            position: absolute;
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--gold);
+            text-shadow: 0 0 8px rgba(232,193,88,0.8);
+            background: var(--bg-deep);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(232,193,88,0.4);
+            box-shadow: 0 0 10px rgba(232,193,88,0.25);
+        }
+
+        .avatar-stage .orbit span {
+            font-size: 11px;
+            width: 22px; height: 22px;
+        }
+
+        .avatar-stage .orbit-inner span {
+            font-size: 10px;
+            width: 18px; height: 18px;
+            color: var(--light-gold);
+            border-color: rgba(232,193,88,0.3);
+        }
+
+        .avatar-stage .orbit span:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+        .avatar-stage .orbit span:nth-child(2) { top: 15%; right: 12%; }
+        .avatar-stage .orbit span:nth-child(3) { top: 50%; right: 0; transform: translateY(-50%); }
+        .avatar-stage .orbit span:nth-child(4) { bottom: 15%; right: 12%; }
+        .avatar-stage .orbit span:nth-child(5) { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .avatar-stage .orbit span:nth-child(6) { bottom: 15%; left: 12%; }
+        .avatar-stage .orbit span:nth-child(7) { top: 50%; left: 0; transform: translateY(-50%); }
+        .avatar-stage .orbit span:nth-child(8) { top: 15%; left: 12%; }
+
+        .avatar-stage .orbit-inner span:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+        .avatar-stage .orbit-inner span:nth-child(2) { top: 25%; right: 6%; }
+        .avatar-stage .orbit-inner span:nth-child(3) { bottom: 25%; right: 6%; }
+        .avatar-stage .orbit-inner span:nth-child(4) { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .avatar-stage .orbit-inner span:nth-child(5) { bottom: 25%; left: 6%; }
+        .avatar-stage .orbit-inner span:nth-child(6) { top: 25%; left: 6%; }
+
+        @keyframes spinOrbit {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spinOrbitReverse {
+            to { transform: rotate(-360deg); }
+        }
+
+        .card {
+            position: relative;
+            background: var(--glass);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 20px;
+            padding: 26px 26px;
+            margin-bottom: 16px;
+            border: 1px solid var(--glass-border);
+            box-shadow:
+                0 8px 32px rgba(0,0,0,0.35),
+                inset 0 1px 0 var(--glass-hi);
+            overflow: hidden;
+            transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            transform-origin: center;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 10%;
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(232,193,88,0.7), transparent);
+            transition: background 0.45s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(232,193,88,0.4);
+            box-shadow:
+                0 12px 40px rgba(0,0,0,0.45),
+                0 0 30px rgba(232,193,88,0.07),
+                inset 0 1px 0 var(--glass-hi);
+            transform: translateY(-2px);
+        }
+
+        .card.focused {
+            transform: scale(0.95);
+            background: linear-gradient(155deg, rgba(167, 139, 250, 0.12), rgba(124, 92, 214, 0.06));
+            border-color: rgba(167, 139, 250, 0.55);
+            box-shadow:
+                0 6px 24px rgba(0,0,0,0.5),
+                0 0 40px var(--purple-glow),
+                inset 0 1px 0 rgba(196, 181, 253, 0.2);
+        }
+
+        .card.focused::before {
+            background: linear-gradient(90deg, transparent, var(--purple), transparent);
+        }
+
+        .card.focused::after {
+            content: '✦';
+            position: absolute;
+            top: 14px;
+            left: 18px;
+            font-size: 12px;
+            color: var(--purple-light);
+            opacity: 0.85;
+            animation: twinkleSmall 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkleSmall {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.15); }
+        }
+
+        .card.focused h2 {
+            color: var(--purple-light);
+        }
+
+        .card.focused h2 .dot {
+            background: var(--purple);
+            box-shadow: 0 0 12px var(--purple);
+        }
+
+        .card.focused p {
+            color: #e6dcf9;
+        }
+
+        .card.focused p strong {
+            color: var(--purple-light);
+        }
+
+        .card.focused .resume-role {
+            color: var(--purple-light);
+        }
+
+        .card.focused .resume-line-3 {
+            color: #e6dcf9;
+        }
+
+        .card.focused .resume-line-3 strong {
+            color: var(--purple-light);
+        }
+
+        .card.focused .resume-divider {
+            background: linear-gradient(90deg, transparent, rgba(167,139,250,0.5), transparent);
+        }
+
+        .card.focused .service-list li {
+            border-bottom-color: rgba(167,139,250,0.12);
+            color: #e6dcf9;
+        }
+
+        .card.focused .service-list li strong {
+            color: var(--purple-light);
+        }
+
+        .card.focused .service-list li .ico {
+            color: var(--purple);
+        }
+
+        .card.focused .ai-tag {
+            background: linear-gradient(135deg, var(--purple), var(--purple-light));
+            color: var(--bg-deep);
+            box-shadow: 0 0 10px var(--purple-glow);
+        }
+
+        .card.focused .skills span {
+            background: rgba(167,139,250,0.1);
+            border-color: rgba(167,139,250,0.35);
+            color: var(--purple-light);
+        }
+
+        .card h2 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            letter-spacing: 0.3px;
+            transition: color 0.45s ease;
+        }
+
+        .card h2 .dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 10px var(--gold);
+            flex-shrink: 0;
+            transition: background 0.45s ease, box-shadow 0.45s ease;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 300;
+            line-height: 2.1;
+            margin-bottom: 10px;
+            text-align: justify;
+            transition: color 0.45s ease;
+        }
+
+        .card p:last-child { margin-bottom: 0; }
+
+        .card p strong {
+            color: var(--pale-gold);
+            font-weight: 600;
+            transition: color 0.45s ease;
+        }
+
+        /* ===== کارت رزومه ===== */
+        .resume-card {
+            text-align: center;
+            padding: 38px 30px 32px;
+        }
+
+        .resume-card .resume-name {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+            margin-bottom: 6px;
+            background: linear-gradient(120deg, #fff4d0 0%, var(--gold) 35%, #fff4d0 55%, var(--gold) 80%, #fff4d0 100%);
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 6s linear infinite;
+            filter: drop-shadow(0 0 22px rgba(232,193,88,0.25));
+        }
+
+        /* عنوان شغلی — طلایی کم‌رنگ */
+        .resume-card .resume-role {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--soft-gold);
+            letter-spacing: 0.3px;
+            margin-bottom: 16px;
+            transition: color 0.45s ease;
+        }
+
+        /* خط مهارت‌آموز — طلایی کم‌رنگ */
+        .resume-card .resume-line-3 {
+            font-size: 13.5px;
+            color: var(--soft-gold);
+            font-weight: 400;
+            margin-bottom: 22px;
+            transition: color 0.45s ease;
+        }
+
+        .resume-card .resume-line-3 strong {
+            color: var(--soft-gold);
+            font-weight: 700;
+            transition: color 0.45s ease;
+        }
+
+        .resume-card .resume-divider {
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(232,193,88,0.3), transparent);
+            margin: 0 auto 22px;
+            transition: background 0.45s ease;
+        }
+
+        .resume-card .resume-desc {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 300;
+            line-height: 2.15;
+            text-align: center;
+            margin: 0;
+            transition: color 0.45s ease;
+        }
+
+        .service-list {
+            list-style: none;
+        }
+
+        .service-list li {
+            font-size: 13.5px;
+            color: var(--text-light);
+            padding: 11px 0;
+            border-bottom: 1px solid rgba(232,193,88,0.08);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            font-weight: 300;
+            transition: color 0.45s ease, border-color 0.45s ease;
+        }
+
+        .service-list li:last-child { border-bottom: none; padding-bottom: 0; }
+        .service-list li:first-child { padding-top: 0; }
+
+        .service-list li .ico {
+            color: var(--gold);
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: color 0.45s ease;
+        }
+
+        .service-list li strong {
+            color: var(--pale-gold);
+            font-weight: 600;
+            transition: color 0.45s ease;
+        }
+
+        .ai-tag {
+            display: inline-block;
+            font-family: monospace;
+            font-size: 9px;
+            font-weight: 900;
+            color: var(--bg-deep);
+            background: linear-gradient(135deg, var(--gold), var(--light-gold));
+            padding: 1px 7px;
+            border-radius: 4px;
+            margin-right: 6px;
+            vertical-align: middle;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 8px rgba(232,193,88,0.4);
+            transition: all 0.45s ease;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skills span {
+            background: rgba(232,193,88,0.07);
+            border: 1px solid rgba(232,193,88,0.22);
+            color: var(--pale-gold);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 12.5px;
+            font-weight: 400;
+            transition: all 0.45s ease;
+        }
+
+        .card:not(.focused) .skills span:hover {
+            background: rgba(232,193,88,0.16);
+            border-color: rgba(232,193,88,0.45);
+            color: var(--light-gold);
+        }
+
+        .cta {
+            text-align: center;
+            padding: 38px 24px;
+            margin-top: 24px;
+            background: var(--glass);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 20px;
+            border: 1px solid rgba(232,193,88,0.3);
+            box-shadow:
+                0 8px 32px rgba(0,0,0,0.35),
+                inset 0 1px 0 var(--glass-hi);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 15%;
+            width: 70%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .cta h2 {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--light-gold);
+            margin-bottom: 10px;
+        }
+
+        .cta p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            font-weight: 300;
+            max-width: 460px;
+            margin: 0 auto 22px;
+            line-height: 2.05;
+        }
+
+        .cta p strong { color: var(--pale-gold); font-weight: 600; }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 14px 30px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            min-width: 240px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1.5px solid rgba(232,193,88,0.45);
+            backdrop-filter: blur(6px);
+            color: var(--gold);
+        }
+
+        .contact-btn .btn-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .contact-btn .btn-id {
+            font-family: monospace;
+            font-size: 11.5px;
+            font-weight: 400;
+            opacity: 0.9;
+            direction: ltr;
+            letter-spacing: 0.3px;
+            color: var(--pale-gold);
+        }
+
+        .contact-btn:hover {
+            background: rgba(232,193,88,0.12);
+            border-color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(232,193,88,0.2);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px 0 10px;
+            color: var(--text-muted);
+            font-size: 11.5px;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .footer .heart {
+            color: var(--pink);
+            font-size: 13px;
+            animation: heartbeat 1.8s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            30% { transform: scale(1.25); }
+            60% { transform: scale(1); }
+        }
+
+        .footer .gold-text { color: var(--gold); }
+
+        @media (max-width: 600px) {
+            .container { padding: 30px 12px 45px; }
+            .hero { padding: 5px 8px 35px; }
+
+            .site-title .title-text { font-size: 20px; gap: 12px; letter-spacing: 1px; }
+            .site-title .title-text .bit { width: 28px; height: 28px; font-size: 15px; }
+            .site-title { margin-bottom: 32px; }
+
+            .avatar-stage { width: 100px; height: 100px; }
+            .avatar { width: 100px; height: 100px; font-size: 42px; }
+            .avatar-stage .orbit-inner { inset: -26px; }
+            .avatar-stage .orbit { inset: -46px; }
+            .avatar-stage .orbit span { width: 18px; height: 18px; font-size: 9px; }
+            .avatar-stage .orbit-inner span { width: 15px; height: 15px; font-size: 8px; }
+
+            .card { padding: 20px 18px; border-radius: 16px; }
+            .resume-card { padding: 30px 18px 24px; }
+            .resume-card .resume-name { font-size: 28px; }
+            .resume-card .resume-role { font-size: 12.5px; }
+            .resume-card .resume-line-3 { font-size: 12px; }
+            .resume-card .resume-desc { font-size: 13px; }
+            .cta h2 { font-size: 17px; }
+            .bismillah { font-size: 13px; }
+            .buttons { flex-direction: column; align-items: stretch; }
+            .contact-btn { width: 100%; min-width: auto; }
+        }
+
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--gold), var(--bg-mid));
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+
+        <div class="bismillah">الهی به امید تو</div>
+
+        <div class="site-title">
+            <div class="title-text">
+                <span class="bit bit-0">0</span>
+                <span class="title-name">قرارگاه صفر و یک</span>
+                <span class="bit bit-1">1</span>
+            </div>
+            <div class="title-line"></div>
+        </div>
+
+        <section class="hero">
+            <div class="avatar-stage">
+                <div class="avatar">💻</div>
+
+                <div class="orbit-inner">
+                    <span>1</span>
+                    <span>0</span>
+                    <span>1</span>
+                    <span>0</span>
+                    <span>1</span>
+                    <span>0</span>
+                </div>
+
+                <div class="orbit">
+                    <span>0</span>
+                    <span>1</span>
+                    <span>0</span>
+                    <span>1</span>
+                    <span>0</span>
+                    <span>1</span>
+                    <span>0</span>
+                    <span>1</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="card resume-card">
+            <div class="resume-name">مریم صیادی</div>
+            <div class="resume-role">کارشناس مهندسی کامپیوتر | دبیر شبکه و نرم‌افزار</div>
+
+            <div class="resume-line-3">
+                <strong>مهارت‌آموز</strong> دانشگاه شهید رجایی تهران
+            </div>
+
+            <div class="resume-divider"></div>
+
+            <p class="resume-desc">
+                مسیرم فقط به کد و شبکه خلاصه نمی‌شه؛ عاشق ساختن محتوا و پادکستم و 
+                دوست دارم دانش فنی‌ام را ساده و صمیمی به گوش کسانی برسانم که می‌خواهند شروع کنند.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2><span class="dot"></span> خدمات</h2>
+            <ul class="service-list">
+                <li>
+                    <span class="ico">🎙️</span>
+                    <span><strong>تولید محتوا و پادکست</strong> با <span class="ai-tag">AI</span> — محتوای ساده و قابل‌فهم، در هر زمینه‌ای که بخواهی.</span>
+                </li>
+                <li>
+                    <span class="ico">💜</span>
+                    <span><strong>مشاوره رایگان کنکور کامپیوتر (ویژه بانوان)</strong> — انتخاب رشته و برنامه‌ریزی مطالعه.</span>
+                </li>
+                <li>
+                    <span class="ico">📚</span>
+                    <span><strong>تدریس خصوصی ویژه بانوان</strong> — فضایی امن و حرفه‌ای، از مبانی شبکه تا نرم‌افزار.</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2><span class="dot"></span> مهارت‌ها</h2>
+            <div class="skills">
+                <span>برنامه‌نویسی پایتون</span>
+                <span>شبکه و نرم‌افزار</span>
+                <span>طراحی سایت</span>
+                <span>تولید پادکست و گویندگی</span>
+                <span>تولید محتوا با AI</span>
+                <span>ادیتور و تدوینگر</span>
+            </div>
+        </div>
+
+        <section class="cta">
+            <h2>بیا با هم شروع کنیم 🚀</h2>
+            <p>
+                داوطلب کنکوری، دانش‌آموز، یا بانویی که می‌خواد مسیر تازه‌ای رو شروع کنه — 
+                <strong>همین حالا بهم پیام بده.</strong> مشاوره کنکور برای بانوان رایگانه.
+            </p>
+            <div class="buttons">
+                <a href="https://rubika.ir/lSayadi2025l" class="contact-btn" target="_blank">
+                    <span class="btn-label">💬 روبیکا</span>
+                    <span class="btn-id">@lSayadi2025l</span>
+                </a>
+                <a href="mailto:maryamsayady81@gmail.com" class="contact-btn">
+                    <span class="btn-label">✉️ ایمیل</span>
+                    <span class="btn-id">maryamsayady81@gmail.com</span>
+                </a>
+            </div>
+        </section>
+
+        <div class="footer">
+            ساخته شده با <span class="heart">♡</span> در <span class="gold-text">قرارگاه صفر و یک</span>
+        </div>
+
+    </div>
+
+    <script>
+        const starsContainer = document.getElementById('stars');
+        const symbols = ['✦', '✧', '⋆', '·'];
+
+        for (let i = 0; i < 12; i++) {
+            const s = document.createElement('span');
+            s.classList.add('star');
+            s.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            s.style.left = Math.random() * 100 + '%';
+            s.style.top = Math.random() * 100 + '%';
+            s.style.fontSize = (7 + Math.random() * 7) + 'px';
+            s.style.animationDelay = Math.random() * 9 + 's';
+            s.style.animationDuration = (6 + Math.random() * 4) + 's';
+            starsContainer.appendChild(s);
+        }
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('a')) return;
+                card.classList.toggle('focused');
+            });
+        });
+    </script>
+
+</body>
+</html>
